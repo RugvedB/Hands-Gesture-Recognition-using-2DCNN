@@ -16,9 +16,9 @@ thresholdframes=50
 ## Let us restore the saved model 
 sess = tf.Session()
 # Step-1: Recreate the network graph. At this step only graph is created.
-saver = tf.train.import_meta_graph('./model.ckpt.meta')
+saver = tf.train.import_meta_graph('./model/trained_model.meta')
 # Step-2: Now let's load the weights saved using the restore method.
-saver.restore(sess, tf.train.latest_checkpoint('./'))
+saver.restore(sess, tf.train.latest_checkpoint('./model/'))
 
 # Accessing the default graph which we have restored
 graph = tf.get_default_graph()
@@ -51,13 +51,15 @@ def predict(frame,y_test_images):
     x_batch = images.reshape(1, image_size,image_size,num_channels)
 
     ### Creating the feed_dict that is required to be fed to calculate y_pred 
-    feed_dict_testing = {x: x_batch, y_true: y_test_images}
+    feed_dict_testing = {X: x_batch, y: y_test_images}
     result=sess.run(y_pred, feed_dict=feed_dict_testing)
     # result is of this format [probabiliy_of gest0,......,probability_of_gest9]
     return np.array(result)
 
+"""
 #TestData prediction
-testpath='./Testdata'
+## testpath
+testpath='./../datasets/Hand-Gesture/Testdata'
 for i in glob(testpath+"/*"):
     print("i",i)
     filename =i
@@ -158,6 +160,7 @@ while(i<1000000):
     i=i+1
     
 cap.release()
+
 cv2.destroyAllWindows()
-"""
+
 

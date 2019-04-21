@@ -1,4 +1,6 @@
-import hgr
+# src/dataset/handgesture.py is imported 
+import dataset.handgesture as dataset
+
 import numpy as np
 import tensorflow as tf
 import datetime
@@ -14,9 +16,10 @@ height=width = img_size
 num_labels = 10
 num_channels = 3
 validatation_size =0.2
-train_path ='./Traindata'
+##location datasets
+train_path ='./../../data/Hand-Gesture/Traindata'
 #reading the data files
-data = hgr.read_train_sets(train_path,img_size,classes,validatation_size)
+data = dataset.read_train_sets(train_path,img_size,classes,validatation_size)
 
 #parameters of each layer 
 filter_size_conv1 = 2
@@ -160,6 +163,7 @@ saver =tf.train.Saver()
 n_epoch = 10000
 batch_size = 50
 
+##Execution phase
 with tf.Session() as sess:
 	init.run()
 	for epoch in range(n_epoch):
@@ -172,7 +176,7 @@ with tf.Session() as sess:
 			val_acc = sess.run(accuracy, feed_dict={X:X_validate_batch,y:y_validate_batch})
 			msg = "Training Epoch {0} --- Training Accuracy: {1:>6.1%}, Validation Accuracy: {2:>6.1%},  Validation Loss: {3:.3f}"
 			print(msg.format(epoch + 1, acc, val_acc, validate_loss))
-	save_path=saver.save(sess,'./model')
+	save_path=saver.save(sess,'./model/trained_model')
 	print("Nodel saved in path %s" %save_path)
 
 
